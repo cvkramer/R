@@ -13,7 +13,7 @@ library(sas7bdat)
 # List of removable extensions. -----
 # ###################################
 # Write list of extensions that don't need examination.
-ext.rm = "HLP, DLL, tiff, tif, xps, ppt, graphml, swf, jar, ico, RTF, gif, exe, SAS, htm, toc, odt, XLS, PDF lnk, js, ttf, png, PH1, PH2, PH3, sublime-workspace, sublime-project, OUT, doc, out, jpg, deb, c, rua, rsp, png, sys, S, Rproj, md, dvi, log, tex, Rmd, Rnw, brew, dll, html, pdf, doxc, pptx, rtf, R, docx, mo, css, xpt, rds, rdx, rdb, h, yml, sps, syd, eps, ipp, hpp, ppd, bat, PPD, sas, r, PNG, EXE, ods, DOC, cpp, lnk, PH0, PDF, bmp, $$$, bib, blm, BLM"
+ext.rm = "HLP, DLL, tiff, tif, xps, ppt, graphml, swf, jar, ico, RTF, gif, exe, SAS, htm, toc, odt, XLS, PDF lnk, js, ttf, png, PH1, PH2, PH3, sublime-workspace, sublime-project, OUT, doc, out, jpg, deb, c, rua, rsp, png, sys, S, Rproj, md, dvi, log, tex, Rmd, Rnw, brew, dll, html, pdf, doxc, pptx, R, docx, mo, css, xpt, rds, rdx, rdb, h, yml, sps, syd, eps, ipp, hpp, ppd, bat, PPD, sas, r, PNG, EXE, ods, DOC, cpp, lnk, PH0, PDF, bmp, $$$, bib, blm, BLM"
 # Convert convenient string to vector of extensions
 ext.rm = unlist(strsplit(ext.rm, ", "))
 
