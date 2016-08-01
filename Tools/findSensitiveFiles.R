@@ -1,7 +1,7 @@
 ####################
 # Preamble ----
 ####################
-library(tcltk)
+library(tcltk2)
 library(foreign)
 library(tcltk)
     #.sav : data = read.spss("C:\\PathToFile\\MyDataFile.sav", to.data.frame=TRUE)
@@ -13,14 +13,13 @@ library(sas7bdat)
 # List of removable extensions. -----
 # ###################################
 # Write list of extensions that don't need examination.
-ext.rm = "HLP, DLL, tiff, tif, xps, ppt, graphml, swf, jar, ico, RTF, gif, exe, SAS, htm, toc, odt, XLS, PDF lnk, js, ttf, png, PH1, PH2, PH3, sublime-workspace, sublime-project, OUT, doc, out, jpg, deb, c, rua, rsp, png, sys, S, Rproj, md, dvi, log, tex, Rmd, Rnw, brew, dll, html, pdf, doxc, pptx, R, docx, mo, css, xpt, rds, rdx, rdb, h, yml, sps, syd, eps, ipp, hpp, ppd, bat, PPD, sas, r, PNG, EXE, ods, DOC, cpp, lnk, PH0, PDF, bmp, $$$, bib, blm, BLM"
+ext.rm = "HLP, DLL, tiff, tif, xps, ppt, graphml, swf, jar, ico, gif, exe, SAS, htm, toc, PDF, lnk, js, ttf, png, PH1, PH2, PH3, sublime-workspace, sublime-project, OUT, doc, out, jpg, deb, c, rua, rsp, png, sys, S, Rproj, md, dvi, log, tex, Rmd, Rnw, brew, dll, html, pdf, doxc, pptx, R, docx, mo, css, xpt, rds, rdx, rdb, h, yml, sps, syd, eps, ipp, hpp, ppd, bat, PPD, sas, r, PNG, EXE, ods, DOC, cpp, lnk, PH0, PDF, bmp, $$$, bib, blm, BLM, motor, revealjs, stagec, T03, T14, T88, T94, T95, T96, T97, T98, T99"
 # Convert convenient string to vector of extensions
 ext.rm = unlist(strsplit(ext.rm, ", "))
 
 ########################################
 # Remove Files from list with ext. -----
 # ######################################
-temp = itp.filetree_fn
 
 # check if pasting and function work as expected.
 #as.vector(sapply(ext.rm, function(x) paste(".",x,sep='') ))
@@ -33,10 +32,14 @@ temp = itp.filetree_fn
 # loop instead
 #
 # Use loop to remove extention types.
+temp = itp.filetree_fn
+
 for( i in 1:length(ext.rm) ){
     x = ext.rm[i]
     temp = temp[!grepl(paste(".*[.]",x,"$",sep=''), temp)]
 }
+
+ paste(outFldr, "OUT/allExtensionsWG2.txt")
 
 #####################################
 # Examine leftovr extensions. -----
@@ -45,6 +48,8 @@ temp.ext = sub(".*/", "", temp)
 temp.ext = temp.ext[grepl(".*[.].*", temp.ext)]
 temp.ext = sub(".*[.]", "", temp.ext)
 sort(unique(temp.ext))
+
+
 
 #####################################
 # Add column of extension-----
@@ -64,12 +69,6 @@ write.csv(itp.filetree_fn, file="/home/cvkramer/Desktop/itpFT_FN.csv")
 # Find conventions, eg Iowa0708... or likewise
 # "Match" normally has student levels data
 
-#####################################
-# Test Automation of Finding Columns -----
-# ###################################
-
-
-
 itp.filetree$ext = tolower(itp.filetree$ext)
 
 itp.filetree[["obs"]] = NA
@@ -79,7 +78,7 @@ iX = multiClass(itp.filetree, "ext", c("xls","xlsx"))
 
 xls.files = itp.filetree[iX,"loc"]
 
-pb = tkProgressBar(title = "R progress bar", min = 0, max = length(xls.files))
+pb = tkProgressBar(title = "Reading XLS/XLSX Files", min = 0, max = length(xls.files))
 s.tm.xls = Sys.time()
 for(i in 1:length(xls.files)){
     if( is.na(itp.filetree[iX,"obs"][i]) ){
@@ -98,7 +97,6 @@ for(i in 1:length(xls.files)){
 }
 close(pb)
 e.tm.xls = Sys.time()
-
 
 ##############################
 # sas7bdat ----
