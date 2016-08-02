@@ -21,17 +21,10 @@ ext.rm = unlist(strsplit(ext.rm, ", "))
 # Remove Files from list with ext. -----
 # ######################################
 
-# check if pasting and function work as expected.
-#as.vector(sapply(ext.rm, function(x) paste(".",x,sep='') ))
-# check if grepl works as expected.
-#sum(grepl(paste(".","pdf","$",sep=''), temp))
-#tmp2 = temp[-grepl(paste(".","pdf","$",sep=''), temp)]
-# Actually remove values with those extensions.
-#tmp = sapply(ext.rm, function(x) temp[-grepl(paste(".",x,"$",sep=''), temp)])
-# Returns list of strings with removed extensions....
-# loop instead
-#
-# Use loop to remove extention types.
+
+#########################################
+# Use loop to remove extention types. ---
+# #######################################
 temp = itp.filetree_fn
 
 for( i in 1:length(ext.rm) ){
@@ -48,8 +41,6 @@ temp.ext = sub(".*/", "", temp)
 temp.ext = temp.ext[grepl(".*[.].*", temp.ext)]
 temp.ext = sub(".*[.]", "", temp.ext)
 sort(unique(temp.ext))
-
-
 
 #####################################
 # Add column of extension-----
@@ -84,7 +75,7 @@ for(i in 1:length(xls.files)){
     if( is.na(itp.filetree[iX,"obs"][i]) ){
         itp.filetree[iX,"obs"][i] =
             tryCatch(
-                dim(read_excel(xls.files[i],skip=0))[1],
+                dim(read_excel(xls.files[i],skip=0)),
                 error = function(e){
                     itp.filetree[iX,"obs.e"][i] = e
                     return(.1) },
@@ -109,17 +100,38 @@ pb = tkProgressBar(title = "R progress bar", min = 0, max = length(sas.files))
 s.tm.sas = Sys.time()
 for(i in 1:length(sas.files)){
     print(i)
+    # Check if file has already been analyzed
+    #
     if( is.na(itp.filetree[iX,"obs"][i]) ){
-        itp.filetree[iX,"obs"][i] =
+        inFile = read.sas7bdat(sas.files[i])
+
+        # Get dimensions
+        #   Row
+        itp.filetree[iX,"nRow"][i] =
             tryCatch(
-                dim(read.sas7bdat(sas.files[i]))[1],
+                dim(inFile)[1],
                 error = function(e){
-                    itp.filetree[iX,"obs.e"][i] = e
+                    itp.filetree[iX,"nRow.e"][i] = e
                     return(.3) },
                 warning = function(w){
-                    itp.filetree[iX,"obs.e"][i] = w
+                    itp.filetree[iX,"nCol.e"][i] = w
                     return(.4) }
             )
+        #   Col
+        itp.filetree[iX,"nCol"][i] =
+            tryCatch(
+                dim(inFile)[2],
+                error = function(e){
+                    itp.filetree[iX,"nRow.e"][i] = e
+                    return(.3) },
+                warning = function(w){
+                    itp.filetree[iX,"nCol.e"][i] = w
+                    return(.4) }
+            )
+
+        # Get colNames
+        itp.filetree[iX,"cNames"][i] =
+            tryCatch()
     }
     setTkProgressBar(pb, i)
 }
