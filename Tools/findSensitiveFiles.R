@@ -117,6 +117,7 @@ for(i in 1:length(sas.files)){
                     itp.filetree[iX,"nCol.e"][i] = w
                     return(.4) }
             )
+
         #   Col
         itp.filetree[iX,"nCol"][i] =
             tryCatch(
@@ -131,7 +132,15 @@ for(i in 1:length(sas.files)){
 
         # Get colNames
         itp.filetree[iX,"cNames"][i] =
-            tryCatch()
+            tryCatch(
+                dim(inFile)[2],
+                error = function(e){
+                    itp.filetree[iX,"nRow.e"][i] = e
+                    return(.3) },
+                warning = function(w){
+                    itp.filetree[iX,"nCol.e"][i] = w
+                    return(.4) }
+            )
     }
     setTkProgressBar(pb, i)
 }
