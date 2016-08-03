@@ -12,11 +12,12 @@ importFWF = function(file, col.num, col.wdt, col.nme=c(1:length(col.num)) ){
     # Check for errors #
     ####################
     test = col.num + col.wdt
-    #The sum of lengths with column numbers should not exceed the column numbers
+    # Column number plus width should not exceed the subsequent column numbers
     if( sum(test[-num.var] > col.num[-1]) > 0){
         stop("VARIABLE COLUMNS OVERLAP")
     }
     
+    # Check input variables.
     stopifnot(as.vector(col.num))
     stopifnot(as.vector(col.wdt))
     stopifnot(as.vector(col.nme))
