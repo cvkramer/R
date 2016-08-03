@@ -7,14 +7,23 @@ importFWF = function(file, col.num, col.wdt, col.nme=c(1:length(col.num)) ){
     tmp.nme = c()
     num.var = length(col.num)
     tmp.wdt = c()
-
-    # Check for errors
+    
+    ####################
+    # Check for errors #
+    ####################
     test = col.num + col.wdt
     #The sum of lengths with column numbers should not exceed the column numbers
     if( sum(test[-num.var] > col.num[-1]) > 0){
         stop("VARIABLE COLUMNS OVERLAP")
     }
+    
+    stopifnot(as.vector(col.num))
+    stopifnot(as.vector(col.wdt))
+    stopifnot(as.vector(col.nme))
 
+    ##################
+    # Function Start #
+    ##################
     # The first observations
     #   Can likely be removed with better programming
     if(col.num[1] == 1){
@@ -33,6 +42,7 @@ importFWF = function(file, col.num, col.wdt, col.nme=c(1:length(col.num)) ){
     for(var in 2:num.var){
         # Find length of temporary width file.
         pos = length(tmp.wdt) + 1
+        
         # If the next variables starting column
         #    is the sum of all previous widths
         #    set next width to next variable
@@ -51,7 +61,7 @@ importFWF = function(file, col.num, col.wdt, col.nme=c(1:length(col.num)) ){
             tmp.nme[pos+1] = col.nme[var]
         }
     }
-    #list(tmp, tmp.nme)
+    
     tmp.dat = read.fwf(file=file, widths = tmp.wdt, col.names = tmp.nme)
     return(tmp.dat[,col.nme])
 }
