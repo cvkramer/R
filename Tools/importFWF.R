@@ -2,8 +2,8 @@ importFWF = function(file, col.num, col.wdt, col.nme=c(1:length(col.num)) ){
 
     # Example Usage: importFWF("./11.TBL", col.num=c(23, 25, 28, 31), col.wdt=c(2,3,2,3), col.nme=c("t1","t2","t3","t4"))
     # Source       : source("~/git/R/Tools/importFWF.R")
-    # Also need vars: in.file, col.nme
-    #
+    # Also need vars: file, col.nme
+
     tmp.nme = c()
     num.var = length(col.num)
     tmp.wdt = c()
